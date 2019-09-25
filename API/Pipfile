@@ -11,6 +11,8 @@ requests = "*"
 pandas = "*"
 flask-sqlalchemy = "*"
 python-dateutil = "*"
+sqlite3 = "*"
+basilica = "*"
 
 [requires]
 python_version = "3.7"
