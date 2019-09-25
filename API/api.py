@@ -11,4 +11,8 @@ DB = SQLAlchemy(app)
 def home():
     return "<h1>Better Reads Database</h1><p>This site is a prototype API for Better Reads.</p>"
 
+@app.route('/api/v1/description', methods=['GET', 'POST'])
+def query():
+    if request.method == 'POST':
+        description = request.form.get('description')
 app.run()
