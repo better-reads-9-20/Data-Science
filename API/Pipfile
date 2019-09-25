@@ -7,6 +7,10 @@ verify_ssl = true
 
 [packages]
 flask = "*"
+requests = "*"
+pandas = "*"
+flask-sqlalchemy = "*"
+python-dateutil = "*"
 
 [requires]
 python_version = "3.7"
