@@ -1,7 +1,0 @@
-# Data Science
-
-## Scraper
-------------
-
-
-
