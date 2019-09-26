@@ -13,6 +13,7 @@ requests = "*"
 gunicorn = "*"
 pandas = "*"
 basilica = "*"
+python-decouple = "*"
 
 [requires]
 python_version = "3.7"
