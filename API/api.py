@@ -15,4 +15,5 @@ def home():
 def query():
     if request.method == 'POST':
         description = request.form.get('description')
+
 app.run()
