@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
+from model import Book
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -14,8 +15,9 @@ DB = SQLAlchemy(app)
 def home():
     if request.method == 'POST':  #this block is only entered when the form is submitted
         title = request.form.get('title')
+        book = DB.session.query(Book.title, Book.author, Book.rating, Book.webpage).filter(Book.title == title).one()
         #description = request.form['descrip']
-        return title
+        return f'{book[0]} is written by {book[1]} its rating {book[2]} the webpage is {book[3]}'
 
     return '''<form method="POST">
                   Title: <input type="text" name="title"><br>

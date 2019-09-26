@@ -6,13 +6,11 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-flask = "*"
-requests = "*"
 pandas = "*"
+flask = "*"
 flask-sqlalchemy = "*"
-python-dateutil = "*"
-sqlite3 = "*"
-basilica = "*"
+gunicorn = "*"
+heroku = "*"
 
 [requires]
 python_version = "3.7"
