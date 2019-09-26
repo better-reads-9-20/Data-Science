@@ -24,7 +24,5 @@ def home():
                   <input type="submit" value="Submit"><br>
               </form>'''
 
-app.run()
-
 if __name__ == '__main__':
     app.run(debug=True)
