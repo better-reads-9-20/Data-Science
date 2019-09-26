@@ -38,13 +38,13 @@ def api():
     if request.method == 'POST':
         description = request.form.to_dict()
         print(description)
-        post = tfidf.transform(description)
-        print(post)
-        post = bsr_matrix.todense(post)
-        print(post)
-        pred_array = nn.kneighbors(post)
-        print(pred_array)
-        output = []
+        #post = tfidf.transform(description)
+        #print(post)
+        #post = bsr_matrix.todense(post)
+       # print(post)
+        #pred_array = nn.kneighbors(post)
+        #print(pred_array)
+        #output = []
         #for pred in pred_array[1][0]:
            #book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn, 
                                     #Book.isbn13).filter(Book.id=int(pred)).all()[0]
