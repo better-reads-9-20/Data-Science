@@ -33,10 +33,10 @@ class Book(DB.Model):
         return f'Book: {self.title} writtien by {self.author}'
 
 
-@app.route('/api/description', methods=['GET', 'POST'])
+@app.route('/api/description', methods=['POST'])
 def api():
     if request.method == 'POST':
-        description = request.json.get('description')
+        description = request.form.to_dict()
         print(description)
         post = tfidf.transform(description)
         print(post)
@@ -50,10 +50,6 @@ def api():
                                     #Book.isbn13).filter(Book.id=int(pred)).all()[0]
             #output.append(book)
         return description
-    return '''<form method="POST">
-                  Title: <input type="text" name="title"><br>
-                  <input type="submit" value="Submit"><br>
-              </form>'''
 
 if __name__ == '__main__':
     app.run(debug=True)
