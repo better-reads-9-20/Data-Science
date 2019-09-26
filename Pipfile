@@ -6,12 +6,13 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-requests = "*"
-pandas = "*"
 flask = "*"
-beautifulsoup4 = "*"
 flask-sqlalchemy = "*"
-lxml = "*"
+request = "*"
+requests = "*"
+gunicorn = "*"
+pandas = "*"
+basilica = "*"
 
 [requires]
 python_version = "3.7"
