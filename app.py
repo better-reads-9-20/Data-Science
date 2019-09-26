@@ -42,19 +42,22 @@ def home():
                     num_pages=row['pages'], published_on=row['published_on'], genres=row['genres'])
         DB.session.add(book)
     DB.session.commit()
-    return "Database Created!"
+    return redirect('/api/description')
 
 @app.route('/api/description', methods=['GET', 'POST'])
 def api():
     if request.method == 'POST':
-        title = request.form.get('title')
-        book = DB.session.query(Book.author,
-                                Book.rating, 
-                                Book.isbn, 
-                                Book.isbn13).filter(Book.title==title).all()[0]
-        return f'''{title} is written by {book[0]}
-                it has a rating of {book[1]}, the 
-                isbn is {book[2], book[3]}'''
+        try:
+            title = request.form.get('title')
+            book = DB.session.query(Book.author,
+                                    Book.rating, 
+                                    Book.isbn, 
+                                    Book.isbn13).filter(Book.title==title).all()[0]
+            return f'''{title} is written by {book[0]}
+                    it has a rating of {book[1]}, the 
+                    isbn is {book[2], book[3]}'''
+            except Exception:
+                return "That book is made up!"
     return '''<form method="POST">
                   Title: <input type="text" name="title"><br>
                   <input type="submit" value="Submit"><br>
