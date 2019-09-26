@@ -13,7 +13,11 @@ requests = "*"
 gunicorn = "*"
 pandas = "*"
 basilica = "*"
+<<<<<<< HEAD
+python-decouple = "*"
+=======
 heroku = "*"
+>>>>>>> 9c8d61e60d67a369dccbce0c736eaf5439bcd2d4
 
 [requires]
 python_version = "3.7"

@@ -36,7 +36,7 @@ csv_file = open('4K_missing_isbn.csv', 'w')
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['n', 'isbn', 'isbn13'])
 count = 0
-for n in vals:
+for n in vals[2000:]:
     url = f'https://goodreads.com/book/show/{n}'
     print(url)
     time.sleep(randint(1, 5))
