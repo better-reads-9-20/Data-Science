@@ -12,7 +12,7 @@ DB = SQLAlchemy(app)
 def home():
     return "<h1>Welcome to Better Reads App</h1>"
 
-@app.route('/', methods=['GET', 'POST']) #allow POST requests
+@app.route('/books', methods=['GET', 'POST']) #allow POST requests
 def query():
     if request.method == 'POST':  #this block is only entered when the form is submitted
         title = request.form.get('title')
