@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from decouple import config
 import pandas as pd
