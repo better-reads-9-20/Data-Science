@@ -1,15 +1,16 @@
 from flask import Flask, request, jsonify, redirect
 from flask_sqlalchemy import SQLAlchemy
 from decouple import config
-import pandas as pd
-
+from scipy.sparse import bsr_matrix
+from joblib import load
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(app)
 
-df = pd.read_csv('thirty_k_imputed.csv')
+nn = load('nearestneighbor_smaller.joblib')
+tfidf = load('tfidf (1).joblib')
 
 class Book(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)
@@ -34,22 +35,21 @@ class Book(DB.Model):
 
 @app.route('/api/description', methods=['POST'])
 def api():
-    if request.method == 'POST':
-        try:
-            title = request.json['title']
-            book = DB.session.query(Book.author,
+        description = request.json['description']
+        post = tfidf.transform(description)
+        post = bsr_matrix.todense(post)
+        pred_array = nn.kneighbors(post)
+        output = []
+        for pred in pred_array[1][0]:
+            book = DB.session.query(Book.title,
+                                    Book.author,
                                     Book.rating, 
                                     Book.isbn, 
-                                    Book.isbn13).filter(Book.title==title).all()[0]
-            return f'''{title} is written by {book[0]}
-                    it has a rating of {book[1]}, the 
-                    isbn is {book[2], book[3]}'''
-        except Exception:
-            return f"That book is made up!"
-    return '''<form method="POST">
-                  Title: <input type="text" name="title"><br>
-                  <input type="submit" value="Submit"><br>
-              </form>'''
+                                    Book.isbn13).filter(Book.id=pred).all()[0]
+            output.append(book)
+        return jsonify(output)
+    except Exception:
+        return f"That book is made up!"
 
 if __name__ == '__main__':
     app.run(debug=True)
