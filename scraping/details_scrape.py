@@ -6,12 +6,13 @@ When blocked, sleeps for 30 seconds and tries again.
 Prints out all values as it goes. This is just for watching that its collecting
 the right data and can be commented out.'''
 
-from bs4 import BeautifulSoup
-import requests
 import csv
 import time
 from random import choice, randint
+
 import pandas as pd
+import requests
+from bs4 import BeautifulSoup
 
 desktop_agents = ['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36',
                   'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36',
@@ -29,19 +30,19 @@ desktop_agents = ['Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML
 def random_headers():
     return {'User-Agent': choice(desktop_agents), 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8'}
 
-ser = pd.read_csv('best_books_list')
+ser = pd.read_csv('bbl_4_ad')
 vals = ser.values
 
-csv_file = open('bb_details.csv', 'a')
+csv_file = open('bb_details_1ad.csv', 'a')
 csv_writer = csv.writer(csv_file)
 csv_writer.writerow(['n', 'title', 'author', 'rating', 'num_ratings',
                      'num_reviews', 'descrip', 'isbn', 'isbn13',
                      'binding', 'edition', 'pages', 'published_on', 'genres'])
-
-for title in vals[3150:19706]:
+count = 0
+for title in vals:
     n = title[0].split('.')[0].split('/')[-1]
     url = f'https://goodreads.com{title[0]}'
-
+    print(url)
     time.sleep(randint(1, 5))
     source = requests.get(url, headers=random_headers())
     status = source.status_code
@@ -51,10 +52,12 @@ for title in vals[3150:19706]:
     elif source.ok:
         data = source.text
         soup = BeautifulSoup(data, 'lxml')
-
-        title_div = soup.find('div', id='metacol')
-        title = title_div.h1.text
-        author = title_div.div.a.span.text
+        try:
+            title_div = soup.find('div', id='metacol')
+            title = title_div.h1.text
+            author = title_div.div.a.span.text
+        except Exception:
+            continue
 
         rating_div = title_div.find('div', id='bookMeta')
         rating = soup.find('span', itemprop='ratingValue').text
@@ -90,18 +93,29 @@ for title in vals[3150:19706]:
         for l in range(len(genre_list)):
             genres.append(genre_list[l].text)
 
+        isbn = None
+        isbn13 = None
         try:
-            isbn_number = soup.find_all("div", {"class":"infoBoxRowItem"})[1].text.strip().split()
-            isbn = isbn_number[0]
+            info = soup.find('div', id='bookDataBox', class_='uitext')
+            #print(info)
+            row_title = info.find_all('div', class_='infoBoxRowTitle')
+            #print(row_title)
+            row_item = info.find_all('div', class_='infoBoxRowItem')
+            #print(row_item)
+            
+            for each in zip(row_title, row_item):
+                #print(each[0], each[1])
+                if each[0].text == 'ISBN':
+                    isbn_info = each[1].text.split()
+                    isbn = isbn_info[0]
+                    isbn13 = isbn_info[-1]
         except Exception:
-            isbn = None
-        try:
-            isbn13 = isbn_number[-1]
-        except Exception:
-            isbn13 = None
+            continue
         csv_writer.writerow([n, title, author, rating, num_ratings,
-                            num_reviews, descrip, isbn, isbn13, 
+                             num_reviews, descrip, isbn, isbn13,
                             binding, edition, pages, published_on, genres])
         print(isbn, isbn13)
+        count += 1
+        print(count)
     else:
         continue
