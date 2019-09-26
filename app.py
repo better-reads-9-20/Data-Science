@@ -31,24 +31,12 @@ class Book(DB.Model):
     def __repr__(self):
         return f'Book: {self.title} writtien by {self.author}'
 
-@app.route('/', methods=['GET'])
-def home():
-    DB.drop_all()
-    DB.create_all()
-    for idx, row in df.iterrows():
-        book = Book(webpage=row['n'], title=row['title'], author=row['author'], descrip=row['descrip'],
-                    rating=row['rating'], num_ratings=row['num_ratings'], num_reviews=row['num_reviews'],
-                    isbn=row['isbn'], isbn13=row['isbn13'], binding=row['binding'], edition=row['edition'],
-                    num_pages=row['pages'], published_on=row['published_on'], genres=row['genres'])
-        DB.session.add(book)
-    DB.session.commit()
-    return redirect('/api/description')
 
-@app.route('/api/description', methods=['GET', 'POST'])
+@app.route('/api/description', methods=['POST'])
 def api():
     if request.method == 'POST':
         try:
-            title = request.form.get('title')
+            title = request.get_json('title')
             book = DB.session.query(Book.author,
                                     Book.rating, 
                                     Book.isbn, 
