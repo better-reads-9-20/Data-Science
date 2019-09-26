@@ -36,7 +36,7 @@ class Book(DB.Model):
 def api():
     if request.method == 'POST':
         try:
-            title = request.get_json('title', force=True)
+            title = request.get_json(force=True).data.get('title')
             book = DB.session.query(Book.author,
                                     Book.rating, 
                                     Book.isbn, 
