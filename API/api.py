@@ -7,13 +7,19 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///better_reads.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(app)
 
-@app.route('/', methods=['GET'])
-def home():
-    return "<h1>Better Reads Database</h1><p>This site is a prototype API for Better Reads.</p>"
+#@app.route('/', methods=['GET'])
+#def home():
 
-@app.route('/api/v1/description', methods=['GET', 'POST'])
-def query():
-    if request.method == 'POST':
-        description = request.form.get('description')
+@app.route('/', methods=['GET', 'POST']) #allow POST requests
+def home():
+    if request.method == 'POST':  #this block is only entered when the form is submitted
+        title = request.form.get('title')
+        #description = request.form['descrip']
+        return title
+
+    return '''<form method="POST">
+                  Title: <input type="text" name="title"><br>
+                  <input type="submit" value="Submit"><br>
+              </form>'''
 
 app.run()
