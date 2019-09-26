@@ -36,7 +36,7 @@ class Book(DB.Model):
 @app.route('/api/description', methods=['GET', 'POST'])
 def api():
     if request.method == 'POST':
-        description = request.json['description']
+        description = request.json.get('description')
         print(description)
         post = tfidf.transform(description)
         print(post)
