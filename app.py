@@ -42,7 +42,8 @@ def home():
                     num_pages=row['pages'], published_on=row['published_on'], genres=row['genres'])
         DB.session.add(book)
     DB.session.commit()
-    return redirect('/api/description')
+    return "Darabase Created!"
+
 @app.route('/api/description', methods=['GET', 'POST'])
 def api():
     if request.method == 'POST':
