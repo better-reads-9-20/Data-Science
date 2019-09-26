@@ -8,9 +8,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///better_reads.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(app)
 
-@app.route('/')
-def home():
-    return "<h1>Welcome to Better Reads App</h1>"
+#@app.route('/')
+#def home():
+    #return "<h1>Welcome to Better Reads App.</h1>"
 
 @app.route('/books', methods=['GET', 'POST']) #allow POST requests
 def query():
