@@ -36,7 +36,7 @@ class Book(DB.Model):
 def api():
     if request.method == 'POST':
         try:
-            title = request.get_json(force=True).data.get('title')
+            title = request.json['title']
             book = DB.session.query(Book.author,
                                     Book.rating, 
                                     Book.isbn, 
@@ -45,7 +45,7 @@ def api():
                     it has a rating of {book[1]}, the 
                     isbn is {book[2], book[3]}'''
         except Exception:
-            return f"That book is made up! {title} {type(title)}"
+            return f"That book is made up!"
     return '''<form method="POST">
                   Title: <input type="text" name="title"><br>
                   <input type="submit" value="Submit"><br>
