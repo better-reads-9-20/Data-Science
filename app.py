@@ -36,13 +36,17 @@ class Book(DB.Model):
 @app.route('/api/description', methods=['POST'])
 def api():
     description = request.json['description']
+    print(description)
     post = tfidf.transform(description)
+    print(post)
     post = bsr_matrix.todense(post)
+    print(post)
     pred_array = nn.kneighbors(post)
+    print(pred_array)
     output = []
     for pred in pred_array[1][0]:
         book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn, 
-                                Book.isbn13).filter(Book.id=pred).all()[0]
+                                Book.isbn13).filter(Book.id=int(pred)).all()[0]
         output.append(book)
     return jsonify(output)
 
