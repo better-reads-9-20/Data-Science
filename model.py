@@ -1,10 +1,10 @@
 ## API pseudo code
-from app import app, DB
+from .app import app, DB
 ## receive post request of string
 
 ## put string through the model wrangle
 
-## get model output 
+## get model output
 
 ## send back books that backend pulls from website, jsonified
 
