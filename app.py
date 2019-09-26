@@ -57,7 +57,7 @@ def api():
                     it has a rating of {book[1]}, the 
                     isbn is {book[2], book[3]}'''
         except Exception:
-            return "That book is made up!"
+            return f"That book is made up! {book} {type(book)}"
     return '''<form method="POST">
                   Title: <input type="text" name="title"><br>
                   <input type="submit" value="Submit"><br>
