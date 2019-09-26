@@ -45,9 +45,9 @@ def api():
         pred_array = nn.kneighbors(post)
         print(pred_array)
         output = []
-        for pred in pred_array[1][0]:
-            book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn, 
-                                    Book.isbn13).filter(Book.id=int(pred)).all()[0]
+        #for pred in pred_array[1][0]:
+           #book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn, 
+                                    #Book.isbn13).filter(Book.id=int(pred)).all()[0]
             output.append(book)
         return description
     return '''<form method="POST">
