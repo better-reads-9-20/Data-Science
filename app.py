@@ -20,11 +20,11 @@ class Book(DB.Model):
     rating = DB.Column(DB.Float)
     num_ratings = DB.Column(DB.String(30))
     num_reviews = DB.Column(DB.String(30))
-    isbn = DB.Column(DB.String(15))
-    isbn13 = DB.Column(DB.String(15))
-    binding = DB.Column(DB.String(15))
+    isbn = DB.Column(DB.String(100))
+    isbn13 = DB.Column(DB.String(100))
+    binding = DB.Column(DB.String(100))
     edition = DB.Column(DB.String(50))
-    num_pages = DB.Column(DB.String(15))
+    num_pages = DB.Column(DB.String(100))
     published_on = DB.Column(DB.String(150))
     genres = DB.Column(DB.String(1000))
 
@@ -42,7 +42,7 @@ def home():
                     num_pages=row['pages'], published_on=row['published_on'], genres=row['genres'])
         DB.session.add(book)
     DB.session.commit()
-    return "Darabase Created!"
+    return "Database Created!"
 
 @app.route('/api/description', methods=['GET', 'POST'])
 def api():
