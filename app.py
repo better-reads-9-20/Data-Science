@@ -35,21 +35,19 @@ class Book(DB.Model):
 
 @app.route('/api/description', methods=['POST'])
 def api():
-        description = request.json['description']
-        post = tfidf.transform(description)
-        post = bsr_matrix.todense(post)
-        pred_array = nn.kneighbors(post)
-        output = []
-        for pred in pred_array[1][0]:
-            book = DB.session.query(Book.title,
-                                    Book.author,
-                                    Book.rating, 
-                                    Book.isbn, 
-                                    Book.isbn13).filter(Book.id=pred).all()[0]
-            output.append(book)
-        return jsonify(output)
-    except Exception:
-        return f"That book is made up!"
+    description = request.json['description']
+    post = tfidf.transform(description)
+    post = bsr_matrix.todense(post)
+    pred_array = nn.kneighbors(post)
+    output = []
+    for pred in pred_array[1][0]:
+        book = DB.session.query(Book.title,
+                                Book.author,
+                                Book.rating, 
+                                Book.isbn, 
+                                Book.isbn13).filter(Book.id=pred).all()[0]
+        output.append(book)
+    return jsonify(output)
 
 if __name__ == '__main__':
     app.run(debug=True)
