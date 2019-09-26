@@ -33,6 +33,7 @@ class Book(DB.Model):
 
 @app.route('/', methods=['GET'])
 def home():
+    DB.drop_all()
     DB.create_all()
     for idx, row in df.iterrows():
         book = Book(webpage=row['n'], title=row['title'], author=row['author'], descrip=row['descrip'],
