@@ -1,25 +1,45 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-from model import Book
+from decouple import config
+
 
 app = Flask(__name__)
-app.config["DEBUG"] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///better_reads.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(app)
 
-#@app.route('/')
-#def home():
-    #return "<h1>Welcome to Better Reads App.</h1>"
+class Book(DB.Model):
+    id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)
+    webpage = DB.Column(DB.BigInteger)
+    title = DB.Column(DB.String(40))
+    author = DB.Column(DB.String(40))
+    descrip = DB.Column(DB.String(2000))
+    rating = DB.Column(DB.Float)
+    num_ratings = DB.Column(DB.String(30))
+    num_reviews = DB.Column(DB.String(30))
+    isbn = DB.Column(DB.String(15))
+    isbn13 = DB.Column(DB.String(15))
+    binding = DB.Column(DB.String(15))
+    edition = DB.Column(DB.String(50))
+    num_pages = DB.Column(DB.String(15))
+    published_on = DB.Column(DB.String(150))
+    genres = DB.Column(DB.String(1000))
 
-@app.route('/books', methods=['GET', 'POST']) #allow POST requests
-def query():
-    if request.method == 'POST':  #this block is only entered when the form is submitted
+    def __repr__(self):
+        return f'Book: {self.title} writtien by {self.author}'
+
+
+@app.route('/api/description', methods=['GET', 'POST'])
+def api():
+    if request.method == 'POST':
         title = request.form.get('title')
-        book = DB.session.query(Book.title, Book.author, Book.rating, Book.webpage).filter(Book.title == title).one()
-        #description = request.form['descrip']
-        return f'{book[0]} is written by {book[1]} its rating {book[2]} the webpage is {book[3]}'
-
+        book = DB.session.query(Book.author,
+                                Book.rating, 
+                                Book.isbn, 
+                                Book.isbn13).filter(Book.title==title).all()[0]
+        return f'''{title} is written by {book[0]}
+                it has a rating of {book[1]}, the 
+                isbn is {book[2], book[3]}'''
     return '''<form method="POST">
                   Title: <input type="text" name="title"><br>
                   <input type="submit" value="Submit"><br>
