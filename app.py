@@ -36,7 +36,7 @@ class Book(DB.Model):
 @app.route('/api/description', methods=['POST'])
 def api():
     if request.method == 'POST':
-        description = request.get_json('description')
+        description = request.get_json('description')['description']
         post = tfidf.transform([description])
         #print(post)
         post = bsr_matrix.todense(post)
