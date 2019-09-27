@@ -37,8 +37,7 @@ class Book(DB.Model):
 def api():
     if request.method == 'POST':
         description = request.get_json('description')
-        print(description)
-        #post = tfidf.transform(description)
+        post = tfidf.transform(description)
         #print(post)
         #post = bsr_matrix.todense(post)
        # print(post)
@@ -49,7 +48,7 @@ def api():
            #book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn, 
                                     #Book.isbn13).filter(Book.id=int(pred)).all()[0]
             #output.append(book)
-        return description
+        return post
 
 if __name__ == '__main__':
     app.run(debug=True)
