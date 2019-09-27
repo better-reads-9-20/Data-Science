@@ -9,9 +9,23 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(app)
 
-nn = load('nearestneighbor.joblib')
-tfidf = load('tfidf.joblib')
+# Load pickled model and pickled vectors
+nn = load('nearestneighbor_smaller.joblib')
+tfidf = load('tfidf (1).joblib')
 
+def get_books(description):
+    '''Predicts books that fit a given description
+     and outputs a list with the 5 best'''
+    post = tfidf.transform([description])
+    post = bsr_matrix.todense(post)
+    pred_array = nn.kneighbors(post)
+    output = []
+    for pred in pred_array[1][0]:
+        book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn).filter(Book.id==int(pred)).all()[0]
+        output.append(book)
+    return output
+
+# Database Table 
 class Book(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)
     webpage = DB.Column(DB.BigInteger)
@@ -32,22 +46,12 @@ class Book(DB.Model):
     def __repr__(self):
         return f'Book: {self.title} writtien by {self.author}'
 
-
+# API route
 @app.route('/api/description', methods=['POST'])
 def api():
-    if request.method == 'POST':
-        description = request.get_json('description')['description']
-        post = tfidf.transform([description])
-        #print(post)
-        post = bsr_matrix.todense(post)
-       # print(post)
-        pred_array = nn.kneighbors(post)
-        #print(pred_array)
-        output = []
-        for pred in pred_array[1][0]:
-            book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn).filter(Book.id==int(pred)).all()[0]
-            output.append(book)
-        return f'{pred_array[1][0]} are the indices of books {output}'
+    description = request.get_json('description')['description']
+    output = get_books(description)
+    return f'{pred_array[1][0]} are the indices of books {output}'
 
 if __name__ == '__main__':
     app.run(debug=True)
