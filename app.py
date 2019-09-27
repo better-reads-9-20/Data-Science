@@ -47,7 +47,7 @@ def api():
         for pred in pred_array[1][0]:
             book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn).filter(Book.id==int(pred)).all()[0]
             output.append(book)
-        return str(output)
+        return str(pred_array[1][0])
 
 if __name__ == '__main__':
     app.run(debug=True)
