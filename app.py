@@ -9,8 +9,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(app)
 
-nn = load('nearestneighbor.joblib')
-tfidf = load('tfidf.joblib')
+nn = load('nearestneighbor_smaller.joblib')
+tfidf = load('tfidf (1).joblib')
 
 class Book(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)
