@@ -9,8 +9,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(app)
 
-nn = load('nearestneighbor_smaller.joblib')
-tfidf = load('tfidf (1).joblib')
+nn = load('nearestneighbor.joblib')
+tfidf = load('tfidf.joblib')
 
 class Book(DB.Model):
     id = DB.Column(DB.Integer, primary_key=True, autoincrement=True)
@@ -47,7 +47,7 @@ def api():
         for pred in pred_array[1][0]:
             book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn).filter(Book.id==int(pred)).all()[0]
             output.append(book)
-        return str(pred_array[1][0])
+        return f'{pred_array[1][0]} are the indices of books {output}'
 
 if __name__ == '__main__':
     app.run(debug=True)
