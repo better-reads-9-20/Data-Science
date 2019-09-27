@@ -5,7 +5,7 @@ from scipy.sparse import bsr_matrix
 from joblib import load
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = config('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///the_db.db' #config('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 DB = SQLAlchemy(app)
 
@@ -23,7 +23,7 @@ def get_books(description):
     for pred in pred_array[1][0]:
         book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn).filter(Book.id==int(pred)).all()[0]
         output.append(book)
-    return output
+    return jsonify(output)
 
 # Database Table 
 class Book(DB.Model):
@@ -45,6 +45,7 @@ class Book(DB.Model):
 
     def __repr__(self):
         return f'Book: {self.title} writtien by {self.author}'
+
 
 # API route
 @app.route('/api/description', methods=['POST'])
