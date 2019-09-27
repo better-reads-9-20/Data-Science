@@ -23,7 +23,7 @@ def get_books(description):
     for pred in pred_array[1][0]:
         book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn).filter(Book.id==int(pred)).all()[0]
         output.append(book)
-    return jsonify(output)
+    return output
 
 # Database Table 
 class Book(DB.Model):
@@ -52,7 +52,7 @@ class Book(DB.Model):
 def api():
     description = request.get_json('description')['description']
     output = get_books(description)
-    return f'{pred_array[1][0]} are the indices of books {output}'
+    return jsonify(output)
 
 if __name__ == '__main__':
     app.run(debug=True)
