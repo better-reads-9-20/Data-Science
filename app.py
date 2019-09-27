@@ -48,7 +48,7 @@ def api():
            #book = DB.session.query(Book.title, Book.author, Book.rating, Book.isbn, 
                                     #Book.isbn13).filter(Book.id=int(pred)).all()[0]
             #output.append(book)
-        return pred_array
+        return tuple(pred_array)
 
 if __name__ == '__main__':
     app.run(debug=True)
