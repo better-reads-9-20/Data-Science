@@ -1,12 +1,28 @@
 # Better-Reads/Data Science
 
-#### Backend delpoyed at [Heroku](https://better-reads-bw.herokuapp.com)<br/>
+## Backend delpoyed at [Heroku](https://better-reads-bw.herokuapp.com)<br/>
 
 ### Backend framework made with Flask
 
 -   Easy-to-Use
 -   Quick Implementation
 -   Lightweight
+
+### Tech Stack
+Python<br/>
+Pandas<br/>
+Flask<br/>
+BeautifulSoup<br/>
+Numpy<br/>
+Decouple<br/>
+Requests<br/>
+SQLAlchemy<br/>
+Psycopg2<br/>
+Scikit-Learn<br/>
+
+### Dependencies
+[requirements](https://github.com/better-reads-9-20/Data-Science/blob/master/requirements.txt)
+
 
 ## Endpoints
 
